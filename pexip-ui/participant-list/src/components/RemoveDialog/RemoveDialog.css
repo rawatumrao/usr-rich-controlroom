@@ -1,0 +1,34 @@
+.removeDialog {
+  top: 200px;
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.openFlex {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttonContainer {
+  display: flex;
+  margin-top: 20px;
+  gap: 10%;
+}
+
+.removeDialogBtn {
+  width: 115px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+}
+
+.removeDialogBtn:hover {
+  background-color: #000;
+}
+
+.remove {
+  background-color: #35354c;
+  color: var(--button-fontColor);
+}

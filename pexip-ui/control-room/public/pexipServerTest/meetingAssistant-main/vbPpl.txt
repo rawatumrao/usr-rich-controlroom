@@ -1,0 +1,13 @@
+Silent Presenters
+presenter1@prodfs.webcasts.com Jennifer Garcia
+presenter2@prodfs.webcasts.com Raymond Torres
+presenter3@prodfs.webcasts.com Olivia Anderson
+presenter4@prodfs.webcasts.com Samantha Taylor
+presenter5@prodfs.webcasts.com Omar Hasan
+presenter6@prodfs.webcasts.com Shannon Jackson
+presenter7@prodfs.webcasts.com Catherine Davis **
+presenter8@prodfs.webcasts.com Georgia Thompson **
+presenter9@prodfs.webcasts.com Melody Williams
+** looks like speaking
+Video with Audio (GM Demo)
+globalmeet@prodfs.webcasts.com Andrea Smith

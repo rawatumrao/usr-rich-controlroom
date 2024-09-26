@@ -1,0 +1,13 @@
+.presenterManagment {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.voiceActivatedContainer {
+  flex-grow: 1;
+}
+
+.switch {
+  cursor: pointer;
+}

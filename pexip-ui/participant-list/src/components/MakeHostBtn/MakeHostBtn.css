@@ -1,0 +1,4 @@
+.makeHostBtn {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}

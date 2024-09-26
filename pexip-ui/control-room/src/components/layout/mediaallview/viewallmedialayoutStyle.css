@@ -1,0 +1,103 @@
+/* Container for the media layout view */
+.view-media-all-layout {
+  flex-grow: 1;
+  padding: 5px;
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.1); /* Red text color */
+  text-align: left;
+}
+
+.link-text {
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.link-text:hover {
+  /* color: #3700b3; */
+}
+
+.layouts {
+  display: flex;
+  flex-direction: column;
+}
+
+.view-media-all-layout .gridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2-column grid */
+  gap: 10px; /* Slightly increased gap for better spacing */
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px; /* Adjust padding for the boxes */
+  background-color: rgba(0, 0, 0, 0.1); /* Darker background for the boxes */
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Add some depth with shadow */
+}
+
+.image {
+  cursor: pointer;
+  transition: border 0.3s, transform 0.3s;
+  width: 100%;
+  border-radius: 4px; /* Slightly rounded corners */
+}
+
+.image.selected {
+  border: 3px solid #007bff; /* Blue border for selected images */
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.7); /* Glow effect for selected images */
+  transform: scale(1.05); /* Slightly increase the size of the selected image */
+}
+
+.text-style {
+  color: white;
+  font-size: 16px;
+  margin: 10px;
+}
+
+.viewAllMediaLayout .mediaImagesDiv {
+  /* display: inline-table; */
+  display: grid;
+  height: 400px;
+  width: 100vw;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+
+.viewAllMediaLayout .expand-collapse-container {
+  position: absolute;
+  top: 35px;
+}
+
+.viewAllMediaLayout .left-arrow,
+.viewAllMediaLayout .right-arrow,
+.viewAllMediaLayout .collapse-button,
+.viewAllMediaLayout .see-all,
+.viewAllMediaLayout .header {
+  display: none;
+}
+
+.viewAllMediaLayout .link-text {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  z-index: 1;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+/* Meda Queries */
+@media (max-width: 768px) {
+  .link-text {
+    font-size: 18px;
+  }
+  .text-style {
+    font-size: 14px;
+  }
+  .view-media-all-layout .gridContainer {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}

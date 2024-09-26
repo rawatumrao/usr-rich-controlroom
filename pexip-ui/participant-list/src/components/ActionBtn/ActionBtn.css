@@ -1,0 +1,72 @@
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  /* gap: 15px; */
+  z-index: 100;
+}
+
+.dropDownOpen {
+  position: absolute;
+  right: 0;
+  width: 200px;
+}
+.actionButton {
+  cursor: pointer;
+  border: none;
+  background-color: #eaebf2;
+  color: #35354c;
+  padding: 7px 10px;
+  text-align: left;
+}
+
+.actionButton:hover {
+  background-color: #b2b2c1;
+}
+
+.dropDownClosed,
+.dropDownHiddenBgClosed {
+  display: none;
+}
+
+.dropDownHiddenBgOpen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5;
+  background-color: #000;
+  opacity: 0.5;
+}
+
+.dialogs {
+  position: fixed;
+  color: #000;
+  border-radius: var(--border-radius);
+  border-color: #eaebf2;
+  z-index: 100;
+}
+
+.dialogBtn {
+  background-color: #35354c;
+}
+
+.dialogBtnLight {
+  background-color: #eff3f7;
+  color: #313f54;
+  font-weight: 800;
+}
+
+.dialogBtnLight:hover {
+  color: #eff3f7;
+}
+
+.roundUpperCorners {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+}
+
+.ellipsisBtn {
+  min-width: 18px;
+  width: 18px;
+}

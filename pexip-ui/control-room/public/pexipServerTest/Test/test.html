@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Test Pexip</title>
+    <link rel="icon" type="image/x-icon" href="" />
+
+    <link rel="stylesheet" href="./test.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+      integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <script src="../meetingAssistant-main/pexip.js"></script>
+    <script src="./custom.js"></script>
+
+    <script>
+      let call_type = "none"; // API only user
+      let node = "alphacn.webcasts.com"; // Pexip Conference node(s)
+      let bandwidth = 1048; // Not Used! Bandwidth only if escalated api -> video call
+      let conference = "53062"; // Pexip meeting
+      let pin = "6187065"; // Chairperson (Host) PIN
+
+      // var pexRTC = new CustomPexRTC();
+
+      // pexRTC.makeCall(node, conference, name, bandwidth, call_type);
+
+      // fetch(
+      //   `https://alphacn.webcasts.com/api/client/v2/conferences/52569/events?token=${localStorage.getItem(
+      //     "token"
+      //   )}`
+      // );
+
+      // Connection to a broadcast channel
+      const bc = new BroadcastChannel("pexip");
+
+      // bc.postMessage("This is a test message.");
+
+      // A handler that only logs the event to the console:
+      bc.onmessage = (event) => {
+        console.log(event);
+      };
+
+      // Disconnect the channel
+      //bc.close();
+    </script>
+  </body>
+</html>

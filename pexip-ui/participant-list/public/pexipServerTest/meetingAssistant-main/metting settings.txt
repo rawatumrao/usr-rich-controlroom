@@ -1,0 +1,30 @@
+Pexip Node
+----------
+alphacn.webcasts.com
+
+Pexip Meeting Room
+------------------
+52874
+
+API Name
+--------
+api_user
+
+Host Pin
+--------
+4025765
+
+WebApp link
+-----------
+https://rfvm.webcasts.com/admin/vidbridge/3502/index.jsp?conference=52874&loc=1&name=&email=rfelix@talkpoint.com&pin=4025765&ui=aa9a80b7e26ee76d6e1df30a7382cb987793a045&si=989ac2149a7135b43b19d9e96873c2fa9292b69b&adv=true
+Logo Uri
+--------
+
+
+
+Get initial token if you don't want to wait the 20 seconds for the server sent token refresh
+---------------------------------------------------------------------------------------------
+go into https://www.rfvm.webcasts.com  
+open console 
+and go to vidbridge.jsp frame
+type in console pexipClientToken

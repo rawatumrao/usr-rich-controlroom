@@ -1,0 +1,14 @@
+.displayName {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.meBold {
+  font-weight: 800;
+}
+
+.hostColor {
+  color: #8f90a4;
+}

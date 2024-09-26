@@ -1,0 +1,93 @@
+.fontSize {
+  font-size: 16px;
+}
+
+.editProfileDialog {
+  position: fixed;
+  top: 125px;
+  min-width: 200px;
+  padding: 25px;
+}
+
+.editProfileDiv {
+  display: grid;
+  grid-gap: 10px;
+}
+
+.editProfileTxtContainer {
+  display: flex;
+  align-items: center;
+}
+
+.updateProfileBtn {
+  height: 35px;
+  width: 100px;
+  border: 0;
+  font-size: 1.1em;
+  background-color: #35354c;
+  cursor: pointer;
+  color: #fff;
+}
+
+.updateProfileBtn:hover {
+  background-color: #000;
+}
+
+.updateProfileTxt {
+  width: 220px;
+  height: 29px;
+  border-radius: 5px;
+  background-color: #fff;
+  border: none;
+}
+
+.updateProfileTxt::placeholder {
+  color: #747373;
+}
+
+.updateProfileTxt {
+  color: #000;
+}
+
+.updateProfileLabel {
+  margin-right: 5px;
+}
+
+.editProfileLabelContainer {
+  display: flex;
+  margin-top: 10px;
+}
+
+.editProfileLabelContainer {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.editProfileName {
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.editProfileLeftSide,
+.editProfileRightSide {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.editProfileLeftSide {
+  margin-right: 20px;
+  min-width: 70px;
+}
+
+.editProfileRightSide {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.fa-x {
+  cursor: pointer;
+}

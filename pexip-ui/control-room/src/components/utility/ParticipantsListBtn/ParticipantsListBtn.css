@@ -1,0 +1,45 @@
+.icon {
+  margin: 0 3px;
+  align-self: center;
+  color: #fff;
+}
+
+.button {
+  background-color: var(--button-bgColor);
+  margin: 0 3px;
+  border-radius: var(--button-borderRadius);
+  color: var(--button-fontColor);
+}
+
+.icon,
+.button {
+  width: 27px;
+  min-width: 27px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.redIcon {
+  color: var(--red-icons);
+}
+
+.greenIcon {
+  color: var(--green-icons);
+}
+
+.button:hover {
+  background-color: #000;
+}
+
+.redBg {
+  background-color: var(--red-icons);
+}
+
+.greenBg {
+  background-color: var(--green-icons);
+}
+
+.guestIcon {
+  cursor: auto;
+}

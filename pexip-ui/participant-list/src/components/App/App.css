@@ -1,0 +1,30 @@
+:root {
+  --border-radius: 5px;
+  --button-borderRadius: 2px;
+  --button-bgColor: #35354d;
+  --button-fontColor: #fff;
+  --red-icons: #c2185b;
+  --green-icons: #19c75f;
+  --yellow-icons: #ffdc81;
+  --button-hover: #000;
+}
+
+html {
+  background-color: #1d1f2e !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+button {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.roundedConers {
+  border-radius: var(--border-radius);
+}
+
+.lightBg {
+  background-color: #eaebf2;
+}

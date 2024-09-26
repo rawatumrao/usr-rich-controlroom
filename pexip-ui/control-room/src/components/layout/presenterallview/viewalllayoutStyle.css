@@ -1,0 +1,38 @@
+.layouts {
+  display: flex;
+  flex-direction: column;
+}
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.zoom-image {
+  transition: transform 0, 3s ease;
+}
+
+.zoom-image:hover {
+  transform: scale(1.1);
+}
+
+.view-all-layout .link-text {
+  display: inline-block;
+  font-size: 1em;
+  font-weight: 400;
+  margin: 10px;
+  z-index: 1;
+}
+
+.images .disabledImage,
+.view-all-layout .disabledImage,
+.expand-collapse-container .disabledImage {
+  background-color: var(--disabled-bg);
+  border: var(--disabled-border) 3px solid;
+}
+
+.images .selectedImage,
+.view-all-layout .selectedImage {
+  border: var(--selected-border) 3px solid;
+  background-color: var(--selected-bg);
+}

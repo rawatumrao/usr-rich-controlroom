@@ -1,0 +1,68 @@
+.participantList {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.participant {
+  display: flex;
+  background-color: #24253c;
+  padding: 9px;
+  border: 2px solid transparent;
+  border-radius: var(--border-radius);
+}
+
+.listHeader {
+  width: fit-content;
+  font-weight: 400;
+  padding: 0px 10px;
+}
+
+.fa-hand,
+.fa-desktop {
+  width: 25px;
+  margin: 0;
+  align-self: center;
+}
+
+.fa-angle-down,
+.fa-angle-right,
+.listHeader {
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    border: 2px solid aqua;
+  }
+
+  50% {
+    border: 2px solid aqua;
+  }
+
+  100% {
+    border: 2px solid aqua;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    border: 2px solid aqua;
+  }
+
+  50% {
+    border: 2px solid aqua;
+  }
+
+  100% {
+    border: 2px solid aqua;
+  }
+}
+
+.talkingBorder {
+  -webkit-animation-name: fadeIn 3s ease infinite;
+  animation: fadeIn 3s ease infinite;
+}

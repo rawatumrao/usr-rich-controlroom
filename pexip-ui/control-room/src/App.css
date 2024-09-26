@@ -1,0 +1,82 @@
+html {
+  background-color: #1d1f2e !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+body {
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden;
+}
+
+.applyBtnDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.btn {
+  background-color: rgb(26, 24, 37);
+  color: white;
+  font-size: 16px;
+  padding: 10px 40px;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--button-borderRadius);
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: White;
+  color: black;
+}
+
+:root {
+  --border-radius: 5px;
+  --button-borderRadius: 2px;
+  --button-bgColor: #3f354d;
+  --button-fontColor: #fff;
+  --red-icons: #c2185b;
+  --green-icons: #19c75f;
+  --yellow-icons: #ffdc81;
+  --onStage-bgColor: #5e609c;
+
+  /* Image Boxes */
+  --selected-boxes: #5e609c;
+  --selected-icons: #393c78;
+  --selected-bg: #dcddf2;
+  --selected-border: #6ec8db;
+
+  --inactive-boxes: #5e609c;
+  --inactive-icons: #393c78;
+  --inactive-bg: #24253c;
+  --inactive-border: #8f90a4;
+
+  --disabled-boxes: #484848;
+  --disabled-icons: #3e3e3e;
+  --disabled-bg: #2d2d2d;
+  --disabled-border: #2d2d2d;
+}
+
+button {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.roundedConers {
+  border-radius: var(--border-radius);
+}
+
+.lightBg {
+  background-color: #eaebf2;
+}
+
+.fa-circle-notch {
+  font-size: 8em;
+}
