@@ -9,7 +9,7 @@ import {
   faAngleDown,
   faAngleRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { EVENTS } from "../../../constants/constants";
+import { EVENTS, LAYOUTS } from "../../../constants/constants";
 import { getLayoutName } from "../../../utils/layoutFuncs";
 import defaultLayout from "../../../images/defaultLayout.svg";
 import largeVideoLayout from "../../../images/largeVideoLayout.svg";
@@ -24,14 +24,17 @@ const Media = ({
   currMediaLayoutIndex,
 }) => {
   const initialImagesSrc = [
-    { src: defaultLayout, index: 0 },
-    { src: largeVideoLayout, index: 1 },
-    { src: largeContentLayout, index: 2 },
-    { src: videoOnly, index: 3 },
-    { src: contentOnly, index: 4 },
+    { src: defaultLayout, index: 0, layout: LAYOUTS.LAYOUT_DEFAULT_VIDEO, },
+    { src: largeVideoLayout, index: 1, layout: LAYOUTS.LAYOUT_VIDEO_LARGE,},
+    { src: largeContentLayout, index: 2, layout: LAYOUTS.LAYOUT_SLIDE_LARGE, },
+    { src: videoOnly, index: 3, layout: LAYOUTS.LAYOUT_VIDEO_ONLY, },
+    { src: contentOnly, index: 4, layout: LAYOUTS.LAYOUT_SLIDE_ONLY, },
   ];
+
+
   const mediaImageDiv = useRef();
   const [expanded, setExpanded] = useState(expandedStatus);
+  const [layoutName, setLayoutName]= useState(LAYOUTS.LAYOUT_DEFAULT_VIDEO);
   const [selectedImage, setSelectedImage] = useState(currMediaLayoutIndex);
   const [imagesSrc, setImagesSrc] = useState(initialImagesSrc); // Manage images array state
   const { setShowRefresh, showRefresh, updatedShowRefreshVar } =
@@ -43,6 +46,7 @@ const Media = ({
     setSelectedImage((prevImage) => (prevImage === idx ? null : idx));
 
     let layout = getLayoutName(img.index);
+    setLayoutName(layout);
 
     pexipBroadCastChannel.postMessage({
       event: EVENTS.controlRoomMediaLayout,
@@ -79,7 +83,7 @@ const Media = ({
   };
 
   const handleSeeAllClick = () => {
-    navigate("/media-all-view");
+    navigate("/media-all-view", {state:{layoutName: layoutName}});
   };
 
   return (
