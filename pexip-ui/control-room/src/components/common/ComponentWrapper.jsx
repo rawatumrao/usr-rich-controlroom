@@ -10,7 +10,7 @@ const ComponentWrapper = ({
   participantsArray,
   pLayout,
   mLayout,
-  setParticipantsArray,
+  // setParticipantsArray,
   setVoiceActivated,
   header,
   roleStatus,
@@ -43,10 +43,11 @@ const ComponentWrapper = ({
         pexipBroadCastChannel={pexipBroadCastChannel}
         expandedStatus={false}
         currMediaLayoutIndex={currMediaLayoutIndex}
+        seeAll={false}
       />
       <PManagement
         participantsArray={participantsArray}
-        setParticipantsArray={setParticipantsArray}
+        // setParticipantsArray={setParticipantsArray}
         setVoiceActivated={setVoiceActivated}
         header={header}
         roleStatus={roleStatus}

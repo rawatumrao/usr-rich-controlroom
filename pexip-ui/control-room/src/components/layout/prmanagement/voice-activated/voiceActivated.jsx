@@ -15,7 +15,10 @@ import {
   LABEL_NAMES,
   SHOW_VB_MSG,
 } from "../../../../constants/constants";
-import { layoutGroupValue } from "../../../../constants/imageConstants";
+import {
+  layoutGroupValue,
+  layoutNameToIndex,
+} from "../../../../constants/imageConstants";
 import { PresenterImages } from "../../../common/presenterImages";
 import ParticipantsListBtn from "../../../utility/ParticipantsListBtn/ParticipantsListBtn";
 import ParticipantsListDisplayName from "../../../utility/ParticipantsListDisplayName/ParticipantsListDisplayName";
@@ -58,26 +61,33 @@ const VoiceActivated = ({
 
   useEffect(() => {
     if (settingSaved === false) {
-      loadItems(data, data);
-    } else if (settingSaved) setsettingSaved(false);
-  }, [data]);
+      // sort by layout order
+      let sortedOnStagePpl = data
+        .filter(
+          (item) =>
+            item.layout_group !== null &&
+            item.protocol !== "api" &&
+            item.protocol !== "rtmp"
+        )
+        .sort(
+          (a, b) =>
+            layoutNameToIndex(a?.layout_group) -
+            layoutNameToIndex(b?.layout_group)
+        );
 
-  const loadItems = (onStageArr, offScreenArr) => {
-    try {
-      const onStage = onStageArr.filter(
-        (item) =>
-          item.layout_group !== null &&
-          item.protocol !== "api" &&
-          item.protocol !== "rtmp"
-      );
-
-      const offScreen = offScreenArr.filter(
+      let offStagePpl = data.filter(
         (item) =>
           item.layout_group === null &&
           item.protocol !== "api" &&
           item.protocol !== "rtmp"
       );
 
+      loadItems(sortedOnStagePpl, offStagePpl);
+    } else if (settingSaved) setsettingSaved(false);
+  }, [data]);
+
+  const loadItems = (onStage, offScreen) => {
+    try {
       setOnStageItems(onStage);
       setOffScreenItems(offScreen);
 
@@ -138,7 +148,7 @@ const VoiceActivated = ({
       destination.droppableId === "onStage" &&
       destList.length > sizeOfLayout
     ) {
-      console.log("Cannot add more participants to onStage. Limit reached.");
+      // console.log("Cannot add more participants to onStage. Limit reached.");
       const errorMessage = `${LABEL_NAMES.blockParticipantOverMaxCount1} ${sizeOfLayout} ${LABEL_NAMES.blockParticipantOverMaxCount2}`;
       SHOW_VB_MSG(errorMessage);
       return;
@@ -190,7 +200,7 @@ const VoiceActivated = ({
     ).total;
 
     if (updatedOnStageItems.length > sizeOfLayout) {
-      console.log("Cannot add more participants to onStage. Limit reached.");
+      // console.log("Cannot add more participants to onStage. Limit reached.");
       const errorMessage = `${LABEL_NAMES.blockParticipantOverMaxCount1} ${sizeOfLayout} ${LABEL_NAMES.blockParticipantOverMaxCount2}`;
       SHOW_VB_MSG(errorMessage);
       return;

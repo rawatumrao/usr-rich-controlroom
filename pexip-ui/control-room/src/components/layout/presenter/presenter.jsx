@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { AppContext } from "../../../contexts/context";
 import "../media/mediaStyle.css";
 import { useNavigate } from "react-router-dom";
@@ -29,8 +29,6 @@ const Presenter = ({ pLayout, setSelectedLayout, pexipBroadCastChannel }) => {
   const [sortedImages, setSortedImages] = useState([PresenterImages]);
   const imageContainerRef = useRef(null);
   const navigate = useNavigate();
-
-  // const sortImages = () => {
   //   const selectedParticipantsNumber =getLayoutOrder(presenterLayout);
   //   const greaterOrEqual = PresenterImages.filter(image=> image.layoutOrder >= selectedParticipantsNumber);
   //   const lessThan = PresenterImages.filter(image => image.layoutOrder < selectedParticipantsNumber);
@@ -40,6 +38,10 @@ const Presenter = ({ pLayout, setSelectedLayout, pexipBroadCastChannel }) => {
 
   //   setSortedImages([...greaterOrEqual, ...lessThan]);
   // };
+
+  useEffect(() => {
+    setSelectedImage(presenterLayout);
+  }, [presenterLayout]);
 
   const sortImages = () => {
     const selectedParticipantsNumber = getLayoutOrder(presenterLayout);
@@ -209,7 +211,7 @@ const Presenter = ({ pLayout, setSelectedLayout, pexipBroadCastChannel }) => {
                     }
                     className={`image ${
                       image.scope === "Adaptive"
-                        ? "zoom-image"
+                        ? "zoom-image disabledImage"
                         : selectedImage === image.layout ||
                           selectedImage?.layout === image.layout
                         ? "zoom-image selectedImage"

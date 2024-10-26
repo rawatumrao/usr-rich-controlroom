@@ -30,12 +30,20 @@
   cursor: pointer;
   border-radius: 5px;
   font-size: 16px;
+  font-weight: 500;
 }
 
 .see-all {
   font-size: 16px;
   color: white;
   cursor: pointer;
+  padding: 5px 10px;
+  background-color: var(--button-bgColor);
+  border-radius: var(--border-radius);
+}
+
+.see-all:hover {
+  background-color: var(--onStage-bgColor);
 }
 
 /* Image gallery styling */
@@ -119,7 +127,7 @@
 
 .nav-arrow {
   font-size: 24px;
-  color: #333;
+  /* color: #333; */
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 20%;
   padding: 10px;
@@ -159,10 +167,13 @@
   cursor: pointer;
   font-size: 20px;
   font-weight: bold;
+  padding: 5px 10px;
+  background-color: var(--button-bgColor);
+  border-radius: var(--border-radius);
 }
 
 .link-text:hover {
-  /* color: #3700b3; */
+  background-color: var(--onStage-bgColor);
 }
 
 .layouts {

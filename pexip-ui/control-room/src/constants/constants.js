@@ -101,7 +101,7 @@ export const CONTROL_ROOM_PRESENTER_LAYOUT =
 
 export const CONTROL_ROOM_MEDIA_LAYOUT =
   ENV === ENVIRONMENT.dev
-    ? 0
+    ? getLayoutIndex(LAYOUTS.LAYOUT_VIDEO_ONLY)
     : CONTROL_ROOM_SHOW_REFRESH
     ? getLayoutIndex(pexipDataJsonVar?.controlRoomData?.mediaLayout)
     : getLayoutIndex(pexipDataJsonVar?.controlRoomData?.defaults?.mediaLayout);
@@ -165,6 +165,8 @@ export const EVENTS = {
   controlRoomShowRefresh: "controlRoomShowRefresh",
   controlRoomIsLoaded: "controlRoomIsLoaded",
   controlRoomLayoutUpdate: "controlRoomLayoutUpdate",
+  controlRoomUpdatedDefaults: "controlRoomUpdatedDefaults",
+  conntrolRoomReload: "conntrolRoomReload",
 };
 
 export const API_CALLS = {
@@ -286,6 +288,7 @@ export const LABEL_NAMES = {
   pinIsTheSameValue: "New Pin value is the same as the current Pin Value.",
   blank: "blank",
   applyBtnSuccess: "All changes have been applied successfully.",
+  controlRoomApplyDisabled: "No changes have been made.",
 };
 
 export const PROTOCOLS = {

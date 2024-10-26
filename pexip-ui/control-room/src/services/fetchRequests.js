@@ -22,6 +22,7 @@ const fetchWithRetryWithTimeout = async (
       if (!response.ok) {
         throw new Error(`HTTP error! status:: ${response.status}`);
       }
+
       return response;
     } catch (error) {
       if (i === retries - 1) {

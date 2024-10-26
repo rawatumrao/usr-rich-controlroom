@@ -14,13 +14,18 @@ import {
   ALT_TAGS,
   CONTROL_ROOM_ON_STAGE,
   CONTROL_ROOM_OFF_SCREEN,
+  // CONTROL_ROOM_VOICE_ACTIVATED,
 } from "../../../constants/constants.js";
+import {
+  layoutNameToIndex,
+  indexToLayoutName,
+} from "../../../constants/imageConstants.js";
 import ApplyBtn from "../ApplyBtn/ApplyBtn";
 import VoiceActivated from "./voice-activated/voiceActivated.jsx";
 
 const PManagement = ({
   participantsArray,
-  setParticipantsArray,
+  // setParticipantsArray,
   header,
   roleStatus,
   talkingPplArray,
@@ -39,14 +44,14 @@ const PManagement = ({
   const [checked, setChecked] = useState(voiceActivated);
   const [expanded, setExpanded] = useState(true);
   const [onStageItems, setOnStageItems] = useState(
-    CONTROL_ROOM_ON_STAGE.length
-      ? CONTROL_ROOM_ON_STAGE
-      : savedOnStageItems.current
+    savedOnStageItems.current.length > -1
+      ? savedOnStageItems.current
+      : CONTROL_ROOM_ON_STAGE
   );
   const [offScreenItems, setOffScreenItems] = useState(
-    CONTROL_ROOM_OFF_SCREEN.length
-      ? CONTROL_ROOM_OFF_SCREEN
-      : savedOffScreenItems.current
+    savedOffScreenItems.current.length > -1
+      ? savedOffScreenItems.current
+      : CONTROL_ROOM_OFF_SCREEN
   );
 
   useEffect(() => {
@@ -65,9 +70,18 @@ const PManagement = ({
       // updating onStageItems
       participantsArray.forEach((item) => {
         onStageItems.forEach((elem) => {
-          if (item.uuid === elem.uuid) updatedOnStageItems.push(item);
+          if (item.uuid === elem.uuid) {
+            updatedOnStageItems.push(elem);
+          }
         });
       });
+
+      // reorder by layout_group
+      updatedOnStageItems.sort(
+        (a, b) =>
+          layoutNameToIndex(a?.layout_group) -
+          layoutNameToIndex(b?.layout_group)
+      );
 
       // updating offScreenItems
       participantsArray.forEach((item) => {
@@ -86,7 +100,12 @@ const PManagement = ({
       //    update list with any changes    //
       ////////////////////////////////////////
 
-      const keysToUpdate = ["overlayText", "isCameraMuted", "isMuted"];
+      const keysToUpdate = [
+        "overlayText",
+        "isCameraMuted",
+        "isMuted",
+        // "layout_group",
+      ];
       let allPpl = [...onStageItems, ...offScreenItems];
 
       // update everyone items with new keys
@@ -102,10 +121,24 @@ const PManagement = ({
         });
       });
 
-      console.log(allPpl);
-
-      const onStage = allPpl.filter((item) => item.layout_group !== null);
+      let onStage = allPpl.filter((item) => item.layout_group !== null);
       const offScreen = allPpl.filter((item) => item.layout_group === null);
+
+      // sort ppl by layout group
+      let sortedOnStagePpl = onStage.sort(
+        (a, b) =>
+          layoutNameToIndex(a?.layout_group) -
+          layoutNameToIndex(b?.layout_group)
+      );
+
+      onStage = sortedOnStagePpl.map((item, index) => {
+        return {
+          ...item,
+          layout_group: indexToLayoutName(index),
+        };
+      });
+
+      // console.log([...onStage, ...offScreen]);
 
       setOnStageItems(onStage);
       setOffScreenItems(offScreen);
@@ -149,6 +182,7 @@ const PManagement = ({
     pexipBroadCastChannel.postMessage({
       event: EVENTS.controlRoomVoiceActivated,
       info: checkedStatus,
+      showRefreshStatus: true,
     });
 
     if (showRefresh === false) {
@@ -173,7 +207,7 @@ const PManagement = ({
         <div className="voiceActivatedContainer">
           <div className="switch-container">
             <span className="switch-label">
-              Voice-Activated
+              <span className="voiceActivatedSpan">Voice-Activated</span>
               <div className="toggle-container">
                 <span className="toggle-label">OFF</span>
                 <div
@@ -197,7 +231,7 @@ const PManagement = ({
             {!checked && (
               <VoiceActivated
                 participantsArray={participantsArray}
-                setParticipantsArray={setParticipantsArray}
+                // setParticipantsArray={setParticipantsArray}
                 header={header}
                 roleStatus={roleStatus}
                 talkingPplArray={talkingPplArray}
@@ -217,6 +251,7 @@ const PManagement = ({
         setOnStageItems={setOnStageItems}
         offScreenItems={offScreenItems}
         setOffScreenItems={setOffScreenItems}
+        pexipBroadCastChannel={pexipBroadCastChannel}
       />
     </div>
   );

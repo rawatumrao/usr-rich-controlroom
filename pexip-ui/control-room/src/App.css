@@ -18,8 +18,9 @@ body {
 .applyBtnDiv {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   padding: 15px;
+  flex-grow: 1;
 }
 
 .btn {

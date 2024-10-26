@@ -75,58 +75,62 @@ const ViewAllLayout = ({ setPresenterAllLayout, pexipBroadCastChannel }) => {
           <div className="gridContainer">
             {voiceActivated
               ? adaptiveImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={
-                      selectedImage === image.layout ||
-                      selectedImage?.layout === image.layout ||
-                      image.scope === "Adaptive"
-                        ? image.selectedImageUrl
-                        : image.imageUrl
-                    }
-                    title={image.alt}
-                    alt={image.alt}
-                    onClick={() => handleImageClick(image)}
-                    onDoubleClick={() => handleDoubleClick(image)}
-                    className={`image ${
-                      selectedImage === image.layout ||
-                      selectedImage?.layout === image.layout
-                        ? "zoom-image selectedImage"
-                        : "zoom-image"
-                    }`}
-                  />
+                  <div key={index} className="box">
+                    <img
+                      key={index}
+                      src={
+                        selectedImage === image.layout ||
+                        selectedImage?.layout === image.layout ||
+                        image.scope === "Adaptive"
+                          ? image.selectedImageUrl
+                          : image.imageUrl
+                      }
+                      title={image.alt}
+                      alt={image.alt}
+                      onClick={() => handleImageClick(image)}
+                      onDoubleClick={() => handleDoubleClick(image)}
+                      className={`image ${
+                        selectedImage === image.layout ||
+                        selectedImage?.layout === image.layout
+                          ? "zoom-image selectedImage"
+                          : "zoom-image"
+                      }`}
+                    />
+                  </div>
                 ))
               : adaptiveImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={
-                      (selectedImage === image.layout ||
-                        selectedImage?.layout === image.layout) &&
-                      image.scope !== "Adaptive"
-                        ? image.selectedImageUrl
-                        : image.imageUrl
-                    }
-                    title={image.alt}
-                    alt={image.alt}
-                    onClick={
-                      image.scope === "Adaptive"
-                        ? () => {}
-                        : () => handleImageClick(image)
-                    }
-                    onDoubleClick={
-                      image.scope === "Adaptive"
-                        ? () => {}
-                        : () => handleDoubleClick(image)
-                    }
-                    className={`image ${
-                      image.scope === "Adaptive"
-                        ? "zoom-image"
-                        : selectedImage === image.layout ||
-                          selectedImage?.layout === image.layout
-                        ? "zoom-image selectedImage"
-                        : "disabledImage"
-                    }`}
-                  />
+                  <div key={index} className="box">
+                    <img
+                      key={index}
+                      src={
+                        (selectedImage === image.layout ||
+                          selectedImage?.layout === image.layout) &&
+                        image.scope !== "Adaptive"
+                          ? image.selectedImageUrl
+                          : image.imageUrl
+                      }
+                      title={image.alt}
+                      alt={image.alt}
+                      onClick={
+                        image.scope === "Adaptive"
+                          ? () => {}
+                          : () => handleImageClick(image)
+                      }
+                      onDoubleClick={
+                        image.scope === "Adaptive"
+                          ? () => {}
+                          : () => handleDoubleClick(image)
+                      }
+                      className={`image ${
+                        image.scope === "Adaptive"
+                          ? "zoom-image disabledImage"
+                          : selectedImage === image.layout ||
+                            selectedImage?.layout === image.layout
+                          ? "zoom-image selectedImage"
+                          : "disabledImage"
+                      }`}
+                    />
+                  </div>
                 ))}
           </div>
         </div>

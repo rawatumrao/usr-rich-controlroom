@@ -1,5 +1,5 @@
 import "./ApplyBtn.css";
-import { useContext, useCallback, useRef } from "react";
+import { useContext, useRef } from "react";
 import { AppContext } from "../../../contexts/context";
 import { NetworkError, ValidationError } from "../../../utils/customErrors";
 import {
@@ -8,6 +8,7 @@ import {
   LAYOUT_PANEL_VIEWER,
   EVENTS,
   CONTROL_ROOM_PINS,
+  YOUR_VB_UUID,
 } from "../../../constants/constants";
 import {
   transformLayout,
@@ -30,87 +31,92 @@ const ApplyBtn = ({
   setOnStageItems,
   offScreenItems,
   setOffScreenItems,
+  pexipBroadCastChannel,
 }) => {
   const {
     Data,
     voiceActivated,
     presenterLayout,
     participantsArray,
-    setParticipantsArray,
+    // setParticipantsArray,
     mediaLayout,
     currentLayout,
     setCurentlayout,
-    pexipBroadCastChannel,
-    prevMediaLayout,
+    // prevMediaLayout,
     showRefresh,
     setShowRefresh,
     savedPinValue,
+    savedSelectedMediaInitIndex,
+    savedOnStageItems,
+    savedOffScreenItems,
   } = useContext(AppContext);
   const pinValue = useRef(
-    CONTROL_ROOM_PINS ? CONTROL_ROOM_PINS : savedPinValue.current
+    savedPinValue.current > -1 ? savedPinValue.current : CONTROL_ROOM_PINS
   );
 
-  // Setting up presenter and media layout by clicking on apply button
-  const handleApplyClick = useCallback(async () => {
-    try {
-      const turnOffSpotlights = () => {
-        participantsArray.forEach((item) => {
-          if (item.spotlightOrder) {
-            participantSpotlightOff({
-              token: Data.current.token,
-              uuid: item.uuid,
-            });
-          }
+  const turnOffSpotlights = () => {
+    participantsArray.forEach(async (item) => {
+      if (item.spotlightOrder) {
+        await participantSpotlightOff({
+          token: Data.current.token,
+          uuid: item.uuid,
         });
-      };
+      }
+    });
+  };
 
-      const applyTransformLayout = async (selectedLayout) => {
-        if (getTotalCapacity(selectedLayout) >= onStageItems.length) {
-          if (selectedLayout !== currentLayout) {
-            try {
-              await transformLayout({
-                token: Data.current.token,
-                body: { transforms: { layout: selectedLayout } },
-              });
-              setCurentlayout(selectedLayout);
-            } catch (error) {
-              console.error(
-                `${LABEL_NAMES.applyTransformLayoutErrMsg} ${error}`
-              );
-            }
-          } else {
-            console.log(LABEL_NAMES.applyTransformLayoutSameLayout);
-          }
+  const applyTransformLayout = async (selectedLayout, voiceActivated) => {
+    if (
+      getTotalCapacity(selectedLayout) >= onStageItems.length ||
+      voiceActivated
+    ) {
+      if (selectedLayout !== currentLayout) {
+        try {
+          await transformLayout({
+            token: Data.current.token,
+            body: { transforms: { layout: selectedLayout } },
+          });
+          setCurentlayout(selectedLayout);
+        } catch (error) {
+          console.error(`${LABEL_NAMES.applyTransformLayoutErrMsg} ${error}`);
         }
-      };
+      } else {
+        console.log(LABEL_NAMES.applyTransformLayoutSameLayout);
+      }
+    }
+  };
 
-      // TODO: figure out what do with this
-      let response = { ok: false };
+  // Setting up presenter and media layout by clicking on apply button
+  const handleApplyClick = async () => {
+    try {
+      let tempOffScreenItems = [];
 
       if (voiceActivated) {
-        console.log(`Voice Activated ${presenterLayout}`);
+        // console.log(`Voice Activated ${presenterLayout}`);
 
         /////////////////////////
         // Voice Activated ON //
         ////////////////////////
 
+        // change layout
+        applyTransformLayout(presenterLayout, voiceActivated);
+
         // clear pinning config
-        if (pinValue.current > 0) {
-          response = await clearPinningConfig({
+        if (pinValue.current > -1) {
+          await clearPinningConfig({
             token: Data.current.token,
           });
 
-          if (response.ok) {
-            pinValue.current = 0;
-            savedPinValue.current = 0;
-          }
+          pinValue.current = 0;
+          savedPinValue.current = 0;
         }
 
-        // change layout
-        await applyTransformLayout(presenterLayout);
+        let tempPartipantsArrayWithLayoutGroup = await participantsArray.filter(
+          (item) => item.layout_group !== null
+        );
 
         // clear participants with layout gorups
-        onStageItems.forEach(async (item) => {
+        tempPartipantsArrayWithLayoutGroup.forEach(async (item) => {
           await clearParticipantFromLayoutGroup({
             uuid: item.uuid,
             token: Data.current.token,
@@ -118,7 +124,7 @@ const ApplyBtn = ({
         });
 
         // clear out onstage layout groups and add them to offScreen
-        const tempOffScreenItems = [
+        tempOffScreenItems = [
           ...offScreenItems,
           ...onStageItems.map((person) => {
             return { ...person, layout_group: null };
@@ -128,8 +134,11 @@ const ApplyBtn = ({
         // update the participants list and onStage and offScreen states
         setOnStageItems([]);
         setOffScreenItems([...tempOffScreenItems]);
+        savedOnStageItems.current = [];
+        savedOffScreenItems.current = [...tempOffScreenItems];
+        // setParticipantsArray([[], ...tempOffScreenItems]);
       } else {
-        console.log("Not VoiceActivated");
+        // console.log("Not VoiceActivated");
 
         //////////////////////////
         // Voice Activated OFF  //
@@ -139,10 +148,10 @@ const ApplyBtn = ({
         let onStagePplWithUpdatedLayoutGroups = [];
         let offScreenPplWithUpdatedLayoutGroups = [];
 
-        onStageItems.forEach((item, index) => {
+        await onStageItems.forEach(async (item, index) => {
           let indexLayoutName = indexToLayoutName(index);
 
-          participantsArray.forEach((elem) => {
+          await participantsArray.forEach((elem) => {
             if (
               elem.layout_group !== indexLayoutName &&
               item.uuid === elem.uuid
@@ -154,16 +163,17 @@ const ApplyBtn = ({
           });
         });
 
-        offScreenPplWithUpdatedLayoutGroups = offScreenItems.filter(
-          (person) => {
-            const participantWithOldDetails = participantsArray.find(
-              (p) => p.uuid === person.uuid
-            );
-            return (
-              person.layout_group !== participantWithOldDetails?.layout_group
-            );
-          }
-        );
+        await offScreenItems.forEach(async (item) => {
+          await participantsArray.forEach((elem) => {
+            if (
+              item.uuid === elem.uuid &&
+              item.layout_group !== elem.layout_group &&
+              elem.layout_group !== null
+            ) {
+              offScreenPplWithUpdatedLayoutGroups.push(item);
+            }
+          });
+        });
 
         // Adaptive Layout only works for voice activated
         if (presenterLayout === "5:7") {
@@ -171,7 +181,7 @@ const ApplyBtn = ({
           throw new ValidationError(errorMessage);
         } else {
           // change layout
-          await applyTransformLayout(presenterLayout);
+          applyTransformLayout(presenterLayout, voiceActivated);
         }
 
         let onStageLength = onStageItems.length;
@@ -197,17 +207,18 @@ const ApplyBtn = ({
             pinValue.current = onStageLength;
             savedPinValue.current = onStageLength;
           } else {
-            console.log(LABEL_NAMES.pinIsTheSameValue);
+            // console.log(LABEL_NAMES.pinIsTheSameValue);
           }
 
           // update the onStage ppl with updated layout groups
-          await Promise.all(
-            onStagePplWithUpdatedLayoutGroups.map((participant) =>
-              setParticipantToLayoutGroup({
-                uuid: participant.uuid,
-                token: Data.current.token,
-                layoutgroup: participant.layout_group,
-              })
+          Promise.all(
+            onStagePplWithUpdatedLayoutGroups.map(
+              async (participant) =>
+                await setParticipantToLayoutGroup({
+                  uuid: participant.uuid,
+                  token: Data.current.token,
+                  layoutgroup: participant.layout_group,
+                })
             )
           );
 
@@ -221,7 +232,7 @@ const ApplyBtn = ({
             }
           }
         } else {
-          console.log("Not VoiceActivated & BLANK PIN CONFIG");
+          // console.log("Not VoiceActivated & BLANK PIN CONFIG");
 
           /////////////////////////////////////////////
           // Voice Activated OFF & BLANK PIN CONFIG  //
@@ -234,12 +245,12 @@ const ApplyBtn = ({
               pinning_config: LABEL_NAMES.blank,
             });
 
-            pinValue.current = LABEL_NAMES.blank;
-            savedPinValue.current = LABEL_NAMES.blank;
+            pinValue.current = 0;
+            savedPinValue.current = 0;
           }
 
           // change layout
-          await applyTransformLayout(presenterLayout);
+          applyTransformLayout(presenterLayout, voiceActivated);
 
           // update the offScreen ppl with updated layout groups
           if (offScreenPplWithUpdatedLayoutGroups.length > 0) {
@@ -255,7 +266,9 @@ const ApplyBtn = ({
         ////////////////////////////////
         //  Updated Particpants Array //
         ////////////////////////////////
-        setParticipantsArray([...onStageItems, ...offScreenItems]);
+        // setParticipantsArray([...onStageItems, ...offScreenItems]);
+        // savedOnStageItems.current = [...onStageItems];
+        // savedOffScreenItems.current = [...offScreenItems];
 
         /////////////////////////////
         // Turn off all Spotlights //
@@ -266,9 +279,19 @@ const ApplyBtn = ({
       ////////////////////////////
       // changing Viewer Layout //
       ////////////////////////////
-      if (mediaLayout !== null && prevMediaLayout.current !== mediaLayout) {
+      if (
+        mediaLayout !== null
+        //&&
+        // getLayoutName(savedSelectedMediaInitIndex.current) !==
+        //   getLayoutName(prevMediaLayout.current)
+      ) {
         try {
-          LAYOUT_PANEL_VIEWER(getLayoutName(mediaLayout));
+          LAYOUT_PANEL_VIEWER(
+            getLayoutName(savedSelectedMediaInitIndex.current)
+          );
+
+          // savedSelectedMediaInitIndex.current = mediaLayout;
+          // prevMediaLayout.current = mediaLayout;
         } catch (err) {
           console.log(`Error while setting up LAYOUT_PANEL_VIEWER: ${err}`);
         }
@@ -277,12 +300,13 @@ const ApplyBtn = ({
       ///////////////////////////////////////////////
       // updated default variables videobridge.jsp //
       ///////////////////////////////////////////////
-      pexipBroadCastChannel.postMessage({
+      await pexipBroadCastChannel.postMessage({
         event: EVENTS.controlRoomApply,
         info: {
-          onStage: onStageItems,
-          offScreen: offScreenItems,
+          onStage: voiceActivated ? [] : onStageItems,
+          offScreen: voiceActivated ? [...tempOffScreenItems] : offScreenItems,
           voiceActivated: voiceActivated,
+          mediaLayout: getLayoutName(savedSelectedMediaInitIndex.current),
           presenterLayout: presenterLayout,
           showRefresh: false,
           pinning_config: pinValue.current,
@@ -291,6 +315,21 @@ const ApplyBtn = ({
 
       if (showRefresh) setShowRefresh(false);
       SHOW_VB_MSG(LABEL_NAMES.applyBtnSuccess);
+
+      await pexipBroadCastChannel.postMessage({
+        event: EVENTS.controlRoomUpdatedDefaults,
+        info: {
+          uuid: YOUR_VB_UUID,
+          onStage: voiceActivated ? [] : onStageItems,
+          offScreen: voiceActivated ? [...tempOffScreenItems] : offScreenItems,
+          voiceActivated: voiceActivated,
+          mediaLayout: getLayoutName(savedSelectedMediaInitIndex.current),
+          presenterLayout: presenterLayout,
+          showRefresh: false,
+          pinning_config: pinValue.current,
+          controlRoomUpdatedDefaults: true,
+        },
+      });
     } catch (error) {
       if (error instanceof ValidationError) {
         SHOW_VB_MSG(error.message);
@@ -301,32 +340,27 @@ const ApplyBtn = ({
         SHOW_VB_MSG(errorMessage);
       }
     }
-  }, [
-    Data,
-    voiceActivated,
-    presenterLayout,
-    participantsArray,
-    setParticipantsArray,
-    mediaLayout,
-    currentLayout,
-    setCurentlayout,
-    pexipBroadCastChannel,
-    prevMediaLayout,
-    pinValue,
-    showRefresh,
-    setShowRefresh,
-    onStageItems,
-    setOnStageItems,
-    offScreenItems,
-    setOffScreenItems,
-    savedPinValue,
-  ]);
+  };
+
+  const disabledApplyBtnPress = () => {
+    SHOW_VB_MSG(LABEL_NAMES.controlRoomApplyDisabled);
+  };
 
   return (
     <div id="applyBtnDiv" className="applyBtnDiv">
-      <button className="btn" onClick={handleApplyClick}>
-        Apply
-      </button>
+      {showRefresh ? (
+        <button className="btn" onClick={handleApplyClick} alt="Apply button">
+          Apply
+        </button>
+      ) : (
+        <button
+          className="btn"
+          onClick={disabledApplyBtnPress}
+          alt="Apply button disabled"
+        >
+          Apply
+        </button>
+      )}
     </div>
   );
 };

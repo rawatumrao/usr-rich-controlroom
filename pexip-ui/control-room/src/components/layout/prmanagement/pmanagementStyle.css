@@ -11,3 +11,7 @@
 .switch {
   cursor: pointer;
 }
+
+.voiceActivatedSpan {
+  margin-left: 20px;
+}

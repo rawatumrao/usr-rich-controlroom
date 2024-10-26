@@ -27,6 +27,33 @@ export const getLayoutName = (index) => {
   return layout;
 };
 
+export const geAltTexttLayoutName = (index) => {
+  let layout = "Default Layout";
+
+  switch (index) {
+    case 0:
+      layout = "Default Layout";
+      break;
+    case 1:
+      layout = "Video Large Layout";
+      break;
+    case 2:
+      layout = "Content Large Layout";
+      break;
+    case 3:
+      layout = "Video Only Layout";
+      break;
+    case 4:
+      layout = "Content Only Layout";
+      break;
+    default:
+      console.log(`error in geAltTexttLayoutName function in media.jsx`);
+      break;
+  }
+
+  return layout;
+};
+
 export const getLayoutIndex = (layoutName) => {
   let layout = 0;
 

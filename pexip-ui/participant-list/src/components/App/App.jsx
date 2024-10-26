@@ -56,15 +56,15 @@ const App = () => {
       if (msg?.data?.event === EVENTS.token_refresh) {
         if (msg?.data?.uuid === YOUR_VB_UUID) {
           Data.current.token = msg?.data?.info;
-          console.log(msg.data);
+          // console.log(msg.data);
         }
       } else if (msg.data.event === EVENTS.participants) {
         let updatedData = createData(msg?.data?.info?.participants);
         setParticipantsArray(updatedData);
         setRoleStatus(findRoleOfUser(updatedData));
-        console.log(updatedData);
+        // console.log(updatedData);
       } else if (msg.data.event === EVENTS.stage) {
-        console.log(msg?.data?.info);
+        // console.log(msg?.data?.info);
         const updatedData = createData(msg?.data?.info);
         setTalkingPplArray(updatedData);
       }

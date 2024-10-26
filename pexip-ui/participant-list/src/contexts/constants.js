@@ -1,5 +1,4 @@
 import { INITIAL_PARTICIPANTS_DUMMY } from "../contexts/testData";
-import { getLayoutIndex } from "../utils/layoutFuncs";
 
 export const ENVIRONMENT = {
   prod: "prod",
@@ -54,77 +53,6 @@ export const STREAMS_ORDER = pexipDataJsonVar?.streamsOrder
   : [];
 export const ROLE_STATUS = ENV === ENVIRONMENT.dev ? true : false;
 
-// CONTROL ROOM ONLY
-export const LAYOUTS = {
-  LAYOUT_DEFAULT_VIDEO: "LAYOUT_DEFAULT_VIDEO",
-  LAYOUT_VIDEO_LARGE: "LAYOUT_VIDEO_LARGE",
-  LAYOUT_SLIDE_LARGE: "LAYOUT_SLIDE_LARGE",
-  LAYOUT_VIDEO_ONLY: "LAYOUT_VIDEO_ONLY",
-  LAYOUT_SLIDE_ONLY: "LAYOUT_SLIDE_ONLY",
-};
-
-export const LAYOUT_PANEL_VIEWER = (layout) => {
-  ENV === ENVIRONMENT.dev
-    ? console.log(layout)
-    : pexipDataJsonVar?.changeViewerLayout(layout);
-};
-
-export const CONTROL_ROOM_IS_LOADED =
-  ENV === ENVIRONMENT.dev ? true : pexipDataJsonVar?.controlRoomData?.isLoaded;
-
-export const CONTROL_ROOM_SHOW_REFRESH =
-  ENV === ENVIRONMENT.dev
-    ? false
-    : pexipDataJsonVar?.controlRoomData?.showRefresh;
-
-export const CONTROL_ROOM_ON_STAGE =
-  ENV === ENVIRONMENT.dev
-    ? []
-    : CONTROL_ROOM_SHOW_REFRESH
-    ? pexipDataJsonVar?.controlRoomData?.onStage
-    : pexipDataJsonVar?.controlRoomData?.defaults?.onStage;
-
-export const CONTROL_ROOM_OFF_SCREEN =
-  ENV === ENVIRONMENT.dev
-    ? []
-    : CONTROL_ROOM_SHOW_REFRESH
-    ? pexipDataJsonVar?.controlRoomData?.offScreen
-    : pexipDataJsonVar?.controlRoomData?.defaults?.offScreen;
-
-export const CONTROL_ROOM_PRESENTER_LAYOUT =
-  ENV === ENVIRONMENT.dev
-    ? "9:0"
-    : CONTROL_ROOM_SHOW_REFRESH
-    ? pexipDataJsonVar?.controlRoomData?.presenterLayout
-    : pexipDataJsonVar?.controlRoomData?.defaults?.presenterLayout;
-
-export const CONTROL_ROOM_MEDIA_LAYOUT =
-  ENV === ENVIRONMENT.dev
-    ? 0
-    : CONTROL_ROOM_SHOW_REFRESH
-    ? getLayoutIndex(pexipDataJsonVar?.controlRoomData?.mediaLayout)
-    : getLayoutIndex(pexipDataJsonVar?.controlRoomData?.defaults?.mediaLayout);
-
-export const CONTROL_ROOM_VOICE_ACTIVATED =
-  ENV === ENVIRONMENT.dev
-    ? null
-    : CONTROL_ROOM_SHOW_REFRESH
-    ? pexipDataJsonVar?.controlRoomData?.voiceActivated
-    : pexipDataJsonVar?.controlRoomData?.defaults?.voiceActivated;
-
-export const CONTROL_ROOM_DEFAULTS =
-  ENV === ENVIRONMENT.dev
-    ? {
-        onStage: [],
-        offScreen: [],
-        presenterLayout: "1:0",
-        voiceActivated: null,
-        mediaLayout: 0,
-        showRefresh: false,
-      }
-    : pexipDataJsonVar?.controlRoomData?.defaults;
-// END OF CONTROL ROOM ONLY
-
 export const EVENTS = {
   token_refresh: "token_refresh",
   participants: "participants",
@@ -145,16 +73,6 @@ export const EVENTS = {
   conferenceStatus: "conferenceStatus",
   orderedList: "orderedList",
   sendMsg: "sendMsg",
-  // CONTROL ROOM ONLY
-  controlRoomVoiceActivated: "controlRoomVoiceActivated",
-  controlRoomStageOrders: "controlRoomStageOrders",
-  controlRoomMediaLayout: "controlRoomMediaLayout",
-  controlRoomPresenterLayout: "controlRoomPresenterLayout",
-  controlRoomRefresh: "controlRoomRefresh",
-  controlRoomApply: "controlRoomApply",
-  controlRoomShowRefresh: "controlRoomShowRefresh",
-  controlRoomIsLoaded: "controlRoomIsLoaded",
-  controlRoomLayoutUpdate: "controlRoomLayoutUpdate",
 };
 
 export const API_CALLS = {
@@ -261,10 +179,6 @@ export const LABEL_NAMES = {
     "A host has stopped your video. Your camera is still connected.",
   unMuteLocalVideoMsg:
     "A host has requested to turn your video on. Please make sure your camera is unmuted.",
-  // CONTROL ROOM ONLY
-  blockParticipantOverMaxCount1: "You are not allowed to have more than",
-  blockParticipantOverMaxCount2: "max participants.",
-  applyChangesFailed: "All changes not applied, please try again.",
 };
 
 export const PROTOCOLS = {

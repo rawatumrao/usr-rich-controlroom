@@ -224,7 +224,7 @@ const ParticipantList = ({
     </Draggable>
   ));
 
-  console.log("LIST RENDERING");
+  // console.log("LIST RENDERING");
 
   if (participantsArray.length === 0) return null;
 
